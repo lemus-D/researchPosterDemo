@@ -1,1 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+      }
+
+      #example-scanning-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.35);
+        color: white;
+        font-family: Arial, sans-serif;
+        pointer-events: none;
+      }
+
+      #example-scanning-overlay.hidden {
+        display: none;
+      }
+
+      #example-scanning-overlay .inner {
+        text-align: center;
+        padding: 20px 24px;
+        border: 2px solid white;
+        border-radius: 12px;
+        background: rgba(0, 0, 0, 0.4);
+      }
+
+      #example-scanning-overlay .target-frame {
+        width: 220px;
+        height: 140px;
+        border: 3px solid white;
+        border-radius: 12px;
+        margin: 16px auto 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="example-scanning-overlay">
+      <div class="inner">
+        <div>Point your camera at the target image</div>
+        <div class="target-frame"></div>
+      </div>
+    </div>
+
+    <a-scene
+      mindar-image="imageTargetSrc: ./targets.mind; showStats: true; uiScanning: #example-scanning-overlay;"
+      color-space="sRGB"
+      renderer="colorManagement: true, physicallyCorrectLights"
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: false"
+    >
+      <a-assets>
+        <img
+          id="card"
+          src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/image-tracking/assets/card-example/card.png"
+        />
+        <a-asset-item
+          id="avatarModel"
+          src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/image-tracking/assets/card-example/softmind/scene.gltf"
+        ></a-asset-item>
+      </a-assets>
+
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <a-entity mindar-image-target="targetIndex: 0">
+        <a-plane
+          src="#card"
+          position="0 0 0"
+          height="0.552"
+          width="1"
+          rotation="0 0 0"
+        ></a-plane>
+
+        <a-gltf-model
+          src="#avatarModel"
+          position="0 0 0.1"
+          rotation="0 0 0"
+          scale="0.005 0.005 0.005"
+          animation="property: position; to: 0 0.1 0.1; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate"
+        ></a-gltf-model>
+      </a-entity>
+    </a-scene>
+  </body>
+</html>
