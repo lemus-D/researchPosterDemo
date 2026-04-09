@@ -26,7 +26,6 @@
         pointer-events: none;
       }
 
-      /* This is the part your file is missing */
       #example-scanning-overlay.hidden {
         display: none;
       }
@@ -49,7 +48,6 @@
     </style>
   </head>
   <body>
-    <!-- Start hidden so MindAR controls visibility -->
     <div id="example-scanning-overlay" class="hidden">
       <div class="inner">
         <div>Point your camera at the target image</div>
@@ -58,27 +56,38 @@
     </div>
 
     <a-scene
-      mindar-image="imageTargetSrc: ./targets.mind; uiScanning: #example-scanning-overlay; maxTrack: 1; filterMinCF: 0.00000000001"
+      mindar-image="imageTargetSrc: ./targets.mind; uiScanning: #example-scanning-overlay; maxTrack: 1;"
       color-space="sRGB"
-      renderer="colorManagement: true, physicallyCorrectLights"
+      renderer="colorManagement: true; physicallyCorrectLights: true"
       vr-mode-ui="enabled: false"
       device-orientation-permission-ui="enabled: false"
     >
       <a-assets>
         <img id="card" src="./card.png" />
+        <a-asset-item id="myModel" src="./scene.gltf"></a-asset-item>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
       <a-entity mindar-image-target="targetIndex: 0">
+        <!-- optional: show the tracked image itself -->
         <a-plane
           src="#card"
-          position="0 0 0"
+          position="0 0 .1"
           height="0.552"
           width="1"
           rotation="0 0 0"
           material="transparent: true"
         ></a-plane>
+
+        <!-- your 3D model -->
+        <a-gltf-model
+          src="#myModel"
+          position="0 0 0.2"
+          rotation="0 0 0"
+          scale="0.1 0.1 0.1"
+          animation="property: position; to: 0 0.05 0.1; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate"
+        ></a-gltf-model>
       </a-entity>
     </a-scene>
   </body>
